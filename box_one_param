@@ -1,0 +1,47 @@
+using System;
+using System.Windows.Forms;
+using Steema.TeeChart;
+using Steema.TeeChart.Styles;
+
+public class BoxPlotExample : Form
+{
+    private TChart tChart1;
+    private Box boxSeries;
+
+    public BoxPlotExample()
+    {
+        InitializeComponent();
+        LoadData();
+    }
+
+    private void InitializeComponent()
+    {
+        tChart1 = new TChart();
+        boxSeries = new Box();
+
+        tChart1.Dock = DockStyle.Fill;
+        tChart1.Series.Add(boxSeries);
+        Controls.Add(tChart1);
+
+        Text = "Box Plot Example";
+        Width = 800;
+        Height = 600;
+    }
+
+    private void LoadData()
+    {
+        double[] data = { 5, 7, 8, 9, 1, 6, 5, 3, 7, 8, 9, 5 };
+
+        foreach (double value in data)
+        {
+            boxSeries.Add(value);
+        }
+    }
+
+    [STAThread]
+    static void Main()
+    {
+        Application.EnableVisualStyles();
+        Application.Run(new BoxPlotExample());
+    }
+}
