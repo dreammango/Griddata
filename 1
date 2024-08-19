@@ -1,0 +1,58 @@
+using Steema.TeeChart;
+using Steema.TeeChart.Styles;
+using System;
+using System.Windows.Forms;
+
+public class BoxChartExample : Form
+{
+    private TChart tChart;
+    private Box boxSeries;
+
+    public BoxChartExample()
+    {
+        InitializeChart();
+        InitializeBoxSeries();
+        PopulateData();
+    }
+
+    private void InitializeChart()
+    {
+        tChart = new TChart();
+        tChart.Dock = DockStyle.Fill;
+        this.Controls.Add(tChart);
+    }
+
+    private void InitializeBoxSeries()
+    {
+        boxSeries = new Box(tChart.Chart);
+        tChart.Series.Add(boxSeries);
+    }
+
+    private void PopulateData()
+    {
+        // 주어진 데이터 (예시)
+        double avg = 15.0;
+        double min = 5.0;
+        double max = 25.0;
+        double range = max - min;
+        double std = 6.0;
+
+        // Box Series에 필요한 데이터 추정 (정규 분포 가정)
+        double zQ1 = -0.675;  // 대략적인 Q1 z-점수
+        double zQ3 = 0.675;   // 대략적인 Q3 z-점수
+        double median = avg;  // 정규 분포에서는 평균 = 중앙값
+        double lowerQuartile = avg + zQ1 * std; // Q1 = 평균 + zQ1 * 표준 편차
+        double upperQuartile = avg + zQ3 * std; // Q3 = 평균 + zQ3 * 표준 편차
+
+        // Box Series에 데이터 추가
+        boxSeries.Add(min, lowerQuartile, median, upperQuartile, max);
+    }
+
+    [STAThread]
+    public static void Main()
+    {
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
+        Application.Run(new BoxChartExample());
+    }
+}
